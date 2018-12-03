@@ -475,7 +475,10 @@ if ( ! class_exists( 'WC_Retailcrm_Icml' ) ) :
                 $tax_rates = WC_Tax::get_rates($product->get_tax_class());
                 $tax = reset($tax_rates);
             }
-            $vendor = get_term( $product, 'product_brand' );
+            
+            // $taxonomy = 'pa_proizvoditel';
+            // $proizvoditel = wp_get_post_terms( $product->get_id(), $taxonomy, array("fields" => "names") );
+            // $vendor_name = reset($proizvoditel);
             $product_data = array(
                 'id' => $product->get_id(), 
                 'productId' => ($this->get_parent_product($product) > 0) ? $parent->get_id() : $product->get_id(),
@@ -483,7 +486,7 @@ if ( ! class_exists( 'WC_Retailcrm_Icml' ) ) :
                 'productName' => ($this->get_parent_product($product) > 0) ? $parent->get_title() : $product->get_title(),
                 'price' => $this->get_price_with_tax($product),
                 'purchasePrice'=> WC_COG_Product::get_cost($product),
-                'vendor'=> $vendor->name,
+                'vendor'=> $product->get_attribute( 'pa_proizvoditel' ),
                 'picture' => $image[0],
                 'url' => ($this->get_parent_product($product) > 0) ? $parent->get_permalink() : $product->get_permalink(),
                 'quantity' => is_null($product->get_stock_quantity()) ? 0 : $product->get_stock_quantity(),
